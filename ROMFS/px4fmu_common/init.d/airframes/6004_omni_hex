@@ -27,7 +27,7 @@ param set-default EKF2_HGT_MODE 3
 param set-default EKF2_EV_DELAY 5
 param set-default EKF2_EV_POS_X 0
 param set-defualt EKF2_EV_POS_Y 0
-param set-default EKF2_EV_POS_Z -0.072
+param set-default EKF2_EV_POS_Z 0
 
 #####################################################################
 #                   control allocation data flow                    #
@@ -41,27 +41,27 @@ param set COM_PREARM_MODE 0
 ##   model inertia (kg, m, relative to PX4 convention body frame)  ##
 ## inertia taken at the centre of mass aligned with px4 body frame ##
 #####################################################################
-param set-default VM_MASS 4       # 3.814
-param set-default VM_INERTIA_XX 0.08401764152
-param set-default VM_INERTIA_XY -0.00000445135
-param set-default VM_INERTIA_XZ 0.00014163105 
-param set-default VM_INERTIA_YY 0.08169689992
-param set-default VM_INERTIA_YZ -0.00000936372
-param set-default VM_INERTIA_ZZ 0.14273598018
-param set-default VM_COM_X -0.002
+param set-default VM_MASS 3.884       # 3.814
+param set-default VM_INERTIA_XX 0.06673220508
+param set-default VM_INERTIA_XY 0.00003305742
+param set-default VM_INERTIA_XZ 0.00006456687
+param set-default VM_INERTIA_YY 0.06885244063
+param set-default VM_INERTIA_YZ -0.00002335558
+param set-default VM_INERTIA_ZZ 0.12326280875
+param set-default VM_COM_X 0
 param set-default VM_COM_Y 0
-param set-default VM_COM_Z 0.028
+param set-default VM_COM_Z -0.00421
 
 #####################################################################
 #                       position controller                         #
 #####################################################################
-param set-default MPC_XY_P 1            # 0.95
-param set-default MPC_XY_VEL_P_ACC 2    # 1.8
-param set-default MPC_XY_VEL_I_ACC 0.4    # 0.4
-param set-default MPC_XY_VEL_D_ACC 0.2    # 0.2
-#param set-default MPC_XY_VEL_MAX 100
-param set-default MPC_Z_P 1            # 1
-param set-default MPC_Z_VEL_P_ACC 4     # 4
+param set-default MPC_XY_P 1.7            # 0.95
+param set-default MPC_XY_VEL_P_ACC 3.8    # 1.8
+param set-default MPC_XY_VEL_I_ACC 0.0    # 0.4
+param set-default MPC_XY_VEL_D_ACC 0.0    # 0.2
+param set-default MPC_XY_VEL_MAX 5
+param set-default MPC_Z_P 1.4            # 1
+param set-default MPC_Z_VEL_P_ACC 10     # 4
 param set-default MPC_Z_VEL_I_ACC 2     # 2
 param set-default MPC_Z_VEL_D_ACC 0     # 0
 #param set-default MPC_Z_VEL_MAX_UP 20
@@ -70,33 +70,34 @@ param set-default MPC_Z_VEL_D_ACC 0     # 0
 #####################################################################
 #                        attitude controller                        #
 #####################################################################
-param set-default MC_ROLL_P 6         # 6.5
-param set-default MC_PITCH_P 6        # 6.5
-param set-default MC_YAW_P 1          # 2.8
-param set-default MC_YAW_WEIGHT 0.4   # 0.4
-param set-default MC_ROLLRATE_MAX 50
-param set-default MC_PITCHRATE_MAX 50
-param set-default MC_YAWRATE_MAX 50
+param set-default MC_ROLL_P 6.5         # 6.5
+param set-default MC_PITCH_P 6.5        # 6.5
+param set-default MC_YAW_P 3.3        # 2.8
+param set-default MC_YAW_WEIGHT 1.0   # 0.4
+param set-default MC_ROLLRATE_MAX 60
+param set-default MC_PITCHRATE_MAX 60
+param set-default MC_YAWRATE_MAX 60
 
 #####################################################################
 #                  angular velocity controller settings             #
 #####################################################################
 param set-default AVC_X_P 18             # 18
-param set-default AVC_X_I 0.2           # 0.2
-param set-default AVC_X_I_LIM 0.3
+param set-default AVC_X_I 1           # 0.2
+param set-default AVC_X_I_LIM 1
 param set-default AVC_X_D 0          # 0.36
-param set-default AVC_X_FF 0.01
+param set-default AVC_X_FF 0.1
 
 param set-default AVC_Y_P 18             # 18
-param set-default AVC_Y_I 0.2           # 0.2
-param set-default AVC_X_I_LIM 0.3
+param set-default AVC_Y_I 1          # 0.2
+param set-default AVC_Y_I_LIM 1
 param set-default AVC_Y_D 0          # 0.36
-param set-default AVC_Y_FF 0.01
+param set-default AVC_Y_FF 0.1
 
-param set-default AVC_Z_P 6             # 7
-param set-default AVC_Z_I 0.1           # 0.1
+param set-default AVC_Z_P 10             # 7
+param set-default AVC_Z_I 1           # 0.1
+param set-default AVC_Z_I_LIM 1
 param set-default AVC_Z_D 0          # 0
-param set-default AVC_Z_FF 0.01
+param set-default AVC_Z_FF 0.1
 
 #####################################################################
 #                             acro mode                             #
