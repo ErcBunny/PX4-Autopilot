@@ -322,6 +322,7 @@ rtps:
     id: 146
   - msg: control_allocator_status
     id: 147
+    send: true
   - msg: mag_worker_data
     id: 148
   - msg: takeoff_status
