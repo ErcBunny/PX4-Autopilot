@@ -173,8 +173,8 @@ void ControlAllocationOmniHex::allocate()
 	_servo_sp.setZero();
 	for (int i = 0; i < 6; i++)
 	{
-		// _rotor_sp(i) = powf(powf(_allocation_raw(i * 2), 2) + powf(_allocation_raw(i * 2 + 1), 2), 0.5f);
-		_rotor_sp(i) = powf(powf(_allocation_raw(i * 2), 2) + powf(_allocation_raw(i * 2 + 1), 2), 0.25f);
+		// _rotor_sp(i) = powf(powf(_allocation_raw(i * 2), 2) + powf(_allocation_raw(i * 2 + 1), 2), 0.5f); // rotor_sp = omega^2
+		_rotor_sp(i) = powf(powf(_allocation_raw(i * 2), 2) + powf(_allocation_raw(i * 2 + 1), 2), 0.25f); // rotor_sp = omega
 		_servo_sp(i) = atan2f(_allocation_raw(i * 2 + 1), _allocation_raw(i * 2));
 	}
 
@@ -235,8 +235,8 @@ void ControlAllocationOmniHex::allocate()
 	_allocation_sp.setZero();
 	for (int i = 0; i < 6; i++)
 	{
-		_allocation_sp(2 * i) = _rotor_sp(i) * cosf(_servo_sp(i));
-		_allocation_sp(2 * i + 1) = _rotor_sp(i) * sinf(_servo_sp(i));
+		_allocation_sp(2 * i) = _rotor_sp(i) * _rotor_sp(i) * cosf(_servo_sp(i));
+		_allocation_sp(2 * i + 1) = _rotor_sp(i) * _rotor_sp(i) * sinf(_servo_sp(i));
 	}
 	_control_allocated = _effectiveness * _allocation_sp;
 
