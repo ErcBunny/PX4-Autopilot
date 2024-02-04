@@ -1,6 +1,11 @@
 CONFIG:
   default: px4_sitl_default
   choices:
+    px4_sitl_ctrlalloc:
+      short: px4_sitl_ctrlalloc
+      buildType: RelWithDebInfo
+      settings:
+        CONFIG: px4_sitl_ctrlalloc
     px4_sitl_default:
       short: px4_sitl
       buildType: RelWithDebInfo

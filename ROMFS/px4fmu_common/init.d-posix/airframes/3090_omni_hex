@@ -24,6 +24,7 @@ param set-default EKF2_EV_DELAY 5
 # control allocation data flow
 angular_velocity_controller start
 control_allocator start
+wrench_adjuster start
 param set MPC_USE_HTE 0
 param set COM_PREARM_MODE 0
 
@@ -32,7 +33,7 @@ param set COM_PREARM_MODE 0
 param set-default VM_MASS 4       # 3.814
 param set-default VM_INERTIA_XX 0.08401764152
 param set-default VM_INERTIA_XY -0.00000445135
-param set-default VM_INERTIA_XZ 0.00014163105 
+param set-default VM_INERTIA_XZ 0.00014163105
 param set-default VM_INERTIA_YY 0.08169689992
 param set-default VM_INERTIA_YZ -0.00000936372
 param set-default VM_INERTIA_ZZ 0.14273598018

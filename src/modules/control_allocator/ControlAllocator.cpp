@@ -68,20 +68,20 @@ ControlAllocator::~ControlAllocator()
 bool
 ControlAllocator::init()
 {
-	if (!_vehicle_torque_setpoint_sub.registerCallback()) {
-		PX4_ERR("vehicle_torque_setpoint callback registration failed!");
+	if (!_vehicle_torque_setpoint_adjusted_sub.registerCallback()) {
+		PX4_ERR("vehicle_torque_setpoint_adjusted callback registration failed!");
 		return false;
 	}
 
-	if (!_vehicle_thrust_setpoint_sub.registerCallback()) {
-		PX4_ERR("vehicle_thrust_setpoint callback registration failed!");
+	if (!_vehicle_thrust_setpoint_adjusted_sub.registerCallback()) {
+		PX4_ERR("vehicle_thrust_setpoint_adjusted callback registration failed!");
 		return false;
 	}
 
-	if (!_vehicle_wrench_setpoint_sub.registerCallback()) {
-		PX4_ERR("vehicle_wrench_setpoint callback registration failed!");
-		return false;
-	}
+	// if (!_vehicle_wrench_setpoint_adjusted_sub.registerCallback()) {
+	// 	PX4_ERR("vehicle_wrench_setpoint callback registration failed!");
+	// 	return false;
+	// }
 
 	return true;
 }
@@ -248,9 +248,9 @@ void
 ControlAllocator::Run()
 {
 	if (should_exit()) {
-		_vehicle_torque_setpoint_sub.unregisterCallback();
-		_vehicle_thrust_setpoint_sub.unregisterCallback();
-		_vehicle_wrench_setpoint_sub.unregisterCallback();
+		_vehicle_torque_setpoint_adjusted_sub.unregisterCallback();
+		_vehicle_thrust_setpoint_adjusted_sub.unregisterCallback();
+		// _vehicle_wrench_setpoint_sub.unregisterCallback();
 		exit_and_cleanup();
 		return;
 	}
@@ -306,66 +306,65 @@ ControlAllocator::Run()
 	// Guard against too small (< 0.2ms) and too large (> 20ms) dt's.
 	const hrt_abstime now = hrt_absolute_time();
 	const float dt = math::constrain(((now - _last_run) / 1e6f), 0.0002f, 0.02f);
-	const float dt_w = (now - _last_wrench_update) / 1e6f;
+	// const float dt_w = (now - _last_wrench_update) / 1e6f;
 
 	bool do_update = false;
-	vehicle_torque_setpoint_s vehicle_torque_setpoint;
-	vehicle_thrust_setpoint_s vehicle_thrust_setpoint;
-	vehicle_wrench_setpoint_s vehicle_wrench_setpoint;
+	vehicle_torque_setpoint_adjusted_s vehicle_torque_setpoint_adjusted;
+	vehicle_thrust_setpoint_adjusted_s vehicle_thrust_setpoint_adjusted;
+	// vehicle_wrench_setpoint_s vehicle_wrench_setpoint;
 
 	// Run allocator on torque changes
-	if (_vehicle_torque_setpoint_sub.update(&vehicle_torque_setpoint)) {
-		_torque_sp = matrix::Vector3f(vehicle_torque_setpoint.xyz);
+	if (_vehicle_torque_setpoint_adjusted_sub.update(&vehicle_torque_setpoint_adjusted)) {
+		_torque_sp = matrix::Vector3f(vehicle_torque_setpoint_adjusted.xyz);
 
 		do_update = true;
-		_timestamp_sample = vehicle_torque_setpoint.timestamp_sample;
+		_timestamp_sample = vehicle_torque_setpoint_adjusted.timestamp_sample;
 
 	}
 
 	// Also run allocator on thrust setpoint changes if the torque setpoint
 	// has not been updated for more than 5ms
-	if (_vehicle_thrust_setpoint_sub.update(&vehicle_thrust_setpoint)) {
-		_thrust_sp = matrix::Vector3f(vehicle_thrust_setpoint.xyz);
+	if (_vehicle_thrust_setpoint_adjusted_sub.update(&vehicle_thrust_setpoint_adjusted)) {
+		_thrust_sp = matrix::Vector3f(vehicle_thrust_setpoint_adjusted.xyz);
 
 		if (dt > 5_ms) {
 			do_update = true;
-			_timestamp_sample = vehicle_thrust_setpoint.timestamp_sample;
+			_timestamp_sample = vehicle_thrust_setpoint_adjusted.timestamp_sample;
 		}
 	}
 
 	// check vehicle_wrench_setpoint from adaptive MPC
-	if (_vehicle_wrench_setpoint_sub.update(&vehicle_wrench_setpoint)) {
+	// if (_vehicle_wrench_setpoint_sub.update(&vehicle_wrench_setpoint)) {
 
-		_last_wrench_update = now;
+	// 	_last_wrench_update = now;
 
-		_use_wrench_sp = vehicle_wrench_setpoint.wrench_sp_valid;
+	// 	_use_wrench_sp = vehicle_wrench_setpoint.wrench_sp_valid;
 
-		if (_use_wrench_sp)
-		{
-			_thrust_sp_w = matrix::Vector3f(
-			vehicle_wrench_setpoint.wrench[0],
-			vehicle_wrench_setpoint.wrench[1],
-			vehicle_wrench_setpoint.wrench[2]
-			);
-			_torque_sp_w = matrix::Vector3f(
-				vehicle_wrench_setpoint.wrench[3],
-				vehicle_wrench_setpoint.wrench[4],
-				vehicle_wrench_setpoint.wrench[5]
-			);
+	// 	if (_use_wrench_sp)
+	// 	{
+	// 		_thrust_sp_w = matrix::Vector3f(
+	// 		vehicle_wrench_setpoint.wrench[0],
+	// 		vehicle_wrench_setpoint.wrench[1],
+	// 		vehicle_wrench_setpoint.wrench[2]
+	// 		);
+	// 		_torque_sp_w = matrix::Vector3f(
+	// 			vehicle_wrench_setpoint.wrench[3],
+	// 			vehicle_wrench_setpoint.wrench[4],
+	// 			vehicle_wrench_setpoint.wrench[5]
+	// 		);
 
-			do_update = true;
-			_timestamp_sample = vehicle_torque_setpoint.timestamp_sample;
-		}
-	}
+	// 		do_update = true;
+	// 		_timestamp_sample = vehicle_torque_setpoint.timestamp_sample;
+	// 	}
+	// }
 
 	// if wrench_setpoint hasn't been updated for 20ms
 	// and _use_wrench_sp is true (often in the case that MPC node is shut down)
 	// switch back to PX4 MC control pipeline
-	if (dt_w > 0.02f && _use_wrench_sp)
-	{
-		_use_wrench_sp = false;
-		PX4_INFO("switch back to PX4 ctrl");
-	}
+	// if (dt_w > 0.02f && _use_wrench_sp) {
+	// 	_use_wrench_sp = false;
+	// 	PX4_INFO("switch back to PX4 ctrl");
+	// }
 
 	if (do_update) {
 		_last_run = now;
@@ -374,24 +373,24 @@ ControlAllocator::Run()
 
 		// Set control setpoint vector
 		matrix::Vector<float, NUM_AXES> c;
-		if (_use_wrench_sp)
-		{
-			c(0) = _torque_sp_w(0);
-			c(1) = _torque_sp_w(1);
-			c(2) = _torque_sp_w(2);
-			c(3) = _thrust_sp_w(0);
-			c(4) = _thrust_sp_w(1);
-			c(5) = _thrust_sp_w(2);
-		}
-		else
-		{
-			c(0) = _torque_sp(0);
-			c(1) = _torque_sp(1);
-			c(2) = _torque_sp(2);
-			c(3) = _thrust_sp(0);
-			c(4) = _thrust_sp(1);
-			c(5) = _thrust_sp(2);
-		}
+
+		// if (_use_wrench_sp) {
+		// 	c(0) = _torque_sp_w(0);
+		// 	c(1) = _torque_sp_w(1);
+		// 	c(2) = _torque_sp_w(2);
+		// 	c(3) = _thrust_sp_w(0);
+		// 	c(4) = _thrust_sp_w(1);
+		// 	c(5) = _thrust_sp_w(2);
+
+		// } else {
+		c(0) = _torque_sp(0);
+		c(1) = _torque_sp(1);
+		c(2) = _torque_sp(2);
+		c(3) = _thrust_sp(0);
+		c(4) = _thrust_sp(1);
+		c(5) = _thrust_sp(2);
+		// }
+
 		_control_allocation->setControlSetpoint(c);
 
 		// Do allocation
@@ -512,12 +511,18 @@ ControlAllocator::publish_legacy_actuator_controls()
 				actuator_sp);
 
 	for (size_t i = 0; i < 8; i++) {
-		if (i < 3)
+		if (i < 3) {
 			actuator_controls_0.control[i] = (PX4_ISFINITE(actuator_sp_normalized(i))) ? actuator_sp_normalized(i) : 0.0f;
-		if (i == 3)
+		}
+
+		if (i == 3) {
 			actuator_controls_0.control[i] = _thrust_sp.norm() / 70.0f;
-		if (i > 3)
+		}
+
+		if (i > 3) {
 			actuator_controls_0.control[i] = (PX4_ISFINITE(actuator_sp_normalized(i - 1))) ? actuator_sp_normalized(i - 1) : 0.0f;
+		}
+
 		actuator_controls_5.control[i] = (PX4_ISFINITE(actuator_sp_normalized(i + 8))) ? actuator_sp_normalized(i + 8) : 0.0f;
 	}
 

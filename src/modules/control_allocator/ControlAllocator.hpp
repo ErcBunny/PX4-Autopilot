@@ -67,7 +67,9 @@
 #include <uORB/topics/control_allocator_status.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/vehicle_torque_setpoint.h>
+#include <uORB/topics/vehicle_torque_setpoint_adjusted.h>
 #include <uORB/topics/vehicle_thrust_setpoint.h>
+#include <uORB/topics/vehicle_thrust_setpoint_adjusted.h>
 #include <uORB/topics/vehicle_actuator_setpoint.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_wrench_setpoint.h>
@@ -138,9 +140,9 @@ private:
 	ActuatorEffectiveness *_actuator_effectiveness{nullptr}; 	///< class providing actuator effectiveness
 
 	// Inputs
-	uORB::SubscriptionCallbackWorkItem _vehicle_torque_setpoint_sub{this, ORB_ID(vehicle_torque_setpoint)};  /**< vehicle torque setpoint subscription */
-	uORB::SubscriptionCallbackWorkItem _vehicle_thrust_setpoint_sub{this, ORB_ID(vehicle_thrust_setpoint)};	 /**< vehicle thrust setpoint subscription */
-	uORB::SubscriptionCallbackWorkItem _vehicle_wrench_setpoint_sub{this, ORB_ID(vehicle_wrench_setpoint)};  /**< wrench sp from adaptive mpc */
+	uORB::SubscriptionCallbackWorkItem _vehicle_torque_setpoint_adjusted_sub{this, ORB_ID(vehicle_torque_setpoint_adjusted)};  /**< vehicle torque setpoint subscription */
+	uORB::SubscriptionCallbackWorkItem _vehicle_thrust_setpoint_adjusted_sub{this, ORB_ID(vehicle_thrust_setpoint_adjusted)};	 /**< vehicle thrust setpoint subscription */
+	// uORB::SubscriptionCallbackWorkItem _vehicle_wrench_setpoint_sub{this, ORB_ID(vehicle_wrench_setpoint)};  /**< wrench sp from adaptive mpc */
 
 	// Outputs
 	uORB::Publication<vehicle_actuator_setpoint_s>	_vehicle_actuator_setpoint_pub{ORB_ID(vehicle_actuator_setpoint)};	/**< actuator setpoint publication */
@@ -157,7 +159,7 @@ private:
 
 	matrix::Vector3f _torque_sp, _torque_sp_w;
 	matrix::Vector3f _thrust_sp, _thrust_sp_w;
-	bool _use_wrench_sp;
+	// bool _use_wrench_sp;
 
 	// float _battery_scale_factor{1.0f};
 	// float _airspeed_scale_factor{1.0f};

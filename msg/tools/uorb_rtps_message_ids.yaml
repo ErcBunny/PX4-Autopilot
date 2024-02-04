@@ -354,6 +354,10 @@ rtps:
   - msg: vehicle_wrench_setpoint
     id: 161
     receive: true
+  - msg: vehicle_thrust_setpoint_adjusted
+    id: 162
+  - msg: vehicle_torque_setpoint_adjusted
+    id: 163
   ########## multi topics: begin ##########
   # if send or receive true, make sure the corresponding single topic is also set
   - msg: actuator_controls_0
