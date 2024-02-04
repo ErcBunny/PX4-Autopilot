@@ -61,6 +61,7 @@ px4_add_board(
 		uuv_pos_control
 		vmount
 		#vtol_att_control
+		wrench_adjuster
 	SYSTEMCMDS
 		#dumpfile
 		dyn

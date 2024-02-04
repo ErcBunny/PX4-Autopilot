@@ -179,7 +179,9 @@ set(msg_files
 	vehicle_status.msg
 	vehicle_status_flags.msg
 	vehicle_thrust_setpoint.msg
+	vehicle_thrust_setpoint_adjusted.msg
 	vehicle_torque_setpoint.msg
+	vehicle_torque_setpoint_adjusted.msg
 	vehicle_trajectory_bezier.msg
 	vehicle_trajectory_waypoint.msg
 	vehicle_wrench_setpoint.msg
