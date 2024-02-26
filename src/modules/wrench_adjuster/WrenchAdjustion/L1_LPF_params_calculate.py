@@ -64,11 +64,12 @@ def get_lpf(omega, Ts):
 # A = params.A
 # lpf_omega = params.lpf_omega
 # Ts = params.l1_Ts
-a = -10
+a = -6
 A = np.diag([a, a, a, a, a, a]) # TODO: need further tunning, -10 with 1 works on real hardware
-w = 1
-lpf_omega = np.array([w, w, w, w, w, w])
+w = 3
+lpf_omega = np.array([w, w, w, w+3, w+3, w+3])
 Ts = 1/250      # to use with cpp node l1 and mpc rate should be set to 1/100 == ekf_Ts
+		# 注意这里的Ts是指L1的时间周期，写进PX4中就是要基于px4状态量的更新周期而改变该值
 G, H, C, D = get_lpf(lpf_omega, Ts)
 
 # l1 estimator matrix 6 * 6
