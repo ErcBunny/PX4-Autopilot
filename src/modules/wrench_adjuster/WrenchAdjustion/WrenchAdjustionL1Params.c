@@ -44,72 +44,72 @@
  *
  * It's recommended to set it < 0.
  *
- * @min -10.0
+ * @min -20.0
  * @max 0.0
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_A11, -5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_A11, -6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
  *
  * It's recommended to set it < 0.
  *
- * @min -10.0
+ * @min -20.0
  * @max 0.0
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_A22, -5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_A22, -6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
  *
  * It's recommended to set it < 0.
  *
- * @min -10.0
+ * @min -20.0
  * @max 0.0
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_A33, -5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_A33, -6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
  *
  * It's recommended to set it < 0.
  *
- * @min -10.0
+ * @min -20.0
  * @max 0.0
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_A44, -5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_A44, -6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
  *
  * It's recommended to set it < 0.
  *
- * @min -10.0
+ * @min -20.0
  * @max 0.0
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_A55, -5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_A55, -6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
  *
  * It's recommended to set it < 0.
  *
- * @min -10.0
+ * @min -20.0
  * @max 0.0
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_A66, -5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_A66, -6.0f);
 
 /**
  * C segment in Wrench Adjuster L1 LPF
@@ -121,7 +121,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_A66, -5.0f);
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_C11, 5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_C11, 3.0f);
 
 /**
  * C segment in Wrench Adjuster L1 LPF
@@ -133,7 +133,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_C11, 5.0f);
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_C22, 5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_C22, 3.0f);
 
 /**
  * C segment in Wrench Adjuster L1 LPF
@@ -145,7 +145,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_C22, 5.0f);
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_C33, 5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_C33, 3.0f);
 
 /**
  * C segment in Wrench Adjuster L1 LPF
@@ -157,7 +157,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_C33, 5.0f);
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_C44, 5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_C44, 6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -169,7 +169,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_C44, 5.0f);
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_C55, 5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_C55, 6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -181,7 +181,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_C55, 5.0f);
  * @decimal 2
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_C66, 5.0f);
+PARAM_DEFINE_FLOAT(WA_LPF_C66, 6.0f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -193,7 +193,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_C66, 5.0f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_E11, 247.50833328f);
+PARAM_DEFINE_FLOAT(WA_LPF_E11, 247.01199988f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -205,7 +205,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_E11, 247.50833328f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_E22, 247.50833328f);
+PARAM_DEFINE_FLOAT(WA_LPF_E22, 247.01199988f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -217,7 +217,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_E22, 247.50833328f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_E33, 247.50833328f);
+PARAM_DEFINE_FLOAT(WA_LPF_E33, 247.01199988f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -229,7 +229,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_E33, 247.50833328f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_E44, 247.50833328f);
+PARAM_DEFINE_FLOAT(WA_LPF_E44, 247.01199988f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -241,7 +241,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_E44, 247.50833328f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_E55, 247.50833328f);
+PARAM_DEFINE_FLOAT(WA_LPF_E55, 247.01199988f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -253,7 +253,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_E55, 247.50833328f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_E66, 247.50833328f);
+PARAM_DEFINE_FLOAT(WA_LPF_E66, 247.01199988f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -265,7 +265,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_E66, 247.50833328f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_G11, 0.98019867f);
+PARAM_DEFINE_FLOAT(WA_LPF_G11, 0.98807171f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -277,7 +277,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_G11, 0.98019867f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_G22, 0.98019867f);
+PARAM_DEFINE_FLOAT(WA_LPF_G22, 0.98807171f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -289,7 +289,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_G22, 0.98019867f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_G33, 0.98019867f);
+PARAM_DEFINE_FLOAT(WA_LPF_G33, 0.98807171f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -301,7 +301,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_G33, 0.98019867f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_G44, 0.98019867f);
+PARAM_DEFINE_FLOAT(WA_LPF_G44, 0.97628571f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -313,7 +313,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_G44, 0.98019867f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_G55, 0.98019867f);
+PARAM_DEFINE_FLOAT(WA_LPF_G55, 0.97628571f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -325,7 +325,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_G55, 0.98019867f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_G66, 0.98019867f);
+PARAM_DEFINE_FLOAT(WA_LPF_G66, 0.97628571f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -337,7 +337,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_G66, 0.98019867f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_H11, 0.00396027f);
+PARAM_DEFINE_FLOAT(WA_LPF_H11, 0.0039761f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -349,7 +349,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_H11, 0.00396027f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_H22, 0.00396027f);
+PARAM_DEFINE_FLOAT(WA_LPF_H22, 0.0039761f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -361,7 +361,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_H22, 0.00396027f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_H33, 0.00396027f);
+PARAM_DEFINE_FLOAT(WA_LPF_H33, 0.0039761f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -373,7 +373,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_H33, 0.00396027f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_H44, 0.00396027f);
+PARAM_DEFINE_FLOAT(WA_LPF_H44, 0.00395238f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -385,7 +385,7 @@ PARAM_DEFINE_FLOAT(WA_LPF_H44, 0.00396027f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_H55, 0.00396027f);
+PARAM_DEFINE_FLOAT(WA_LPF_H55, 0.00395238f);
 
 /**
  * A segment in Wrench Adjuster L1 LPF
@@ -397,6 +397,6 @@ PARAM_DEFINE_FLOAT(WA_LPF_H55, 0.00396027f);
  * @decimal 8
  * @group Wrench Adjuster
  */
-PARAM_DEFINE_FLOAT(WA_LPF_H66, 0.00396027f);
+PARAM_DEFINE_FLOAT(WA_LPF_H66, 0.00395238f);
 
 

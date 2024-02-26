@@ -70,8 +70,8 @@ void WrenchAdjustionL1::updateParameters()
 	_vehicle_inertia(2, 1) = _param_vm_inertia_yz.get();
 	_vehicle_inertia(2, 2) = _param_vm_inertia_zz.get();
 	_center_of_mass(0) = _param_vm_com_x.get();
-	_center_of_mass(1) = _param_vm_com_x.get();
-	_center_of_mass(2) = _param_vm_com_x.get();
+	_center_of_mass(1) = _param_vm_com_y.get();
+	_center_of_mass(2) = _param_vm_com_z.get();
 	_A.setZero();
 	_A(0, 0) = _param_wa_lpf_a11.get();
 	_A(1, 1) = _param_wa_lpf_a22.get();
@@ -133,7 +133,7 @@ void WrenchAdjustionL1::calculateOtherParams()
 
 	_Binv.setZero();
 	// B_inv.block<3, 3>(0, 3) = Eigen::Matrix3d::Zero();
-	matrix_block_set(_vehicle_inertia, _B, 3, 3);
+	matrix_block_set(_vehicle_inertia, _Binv, 3, 3);
 	// B_inv.block<3, 3>(3, 3) = params.J;
 
 	_lpf.x.setZero();
@@ -142,7 +142,7 @@ void WrenchAdjustionL1::calculateOtherParams()
 
 void WrenchAdjustionL1::adjustCalculate(const WrenchAdjustionStates &states, const double &Ts)
 {
-	matrix::Dcm<double> R(states.q);// 这里的R就是matrix<double, 3> 类型的
+	matrix::Dcm<double> R(states.q);
 	update_input_gain(_B, _Binv, R);
 	update_reduced_states(_z, states.v, states.w);
 	_sigma_hat = -_Binv * _E * (_z_hat - _z);

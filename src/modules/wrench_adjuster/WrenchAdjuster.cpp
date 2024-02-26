@@ -200,7 +200,7 @@ void WrenchAdjuster::parameters_updated()
 	}
 
 	update_wrench_adjustion_method();
-	// 具体的参数在各自的方法中获取
+	// Specific parameters are obtained in their respective methods
 	return;
 }
 
@@ -356,14 +356,14 @@ void WrenchAdjuster::Run()
 						     );
 		}
 
-		// 更新无人机的状态量
+		// vehicle states update
 		WrenchAdjustionStates states{set_wrench_ad_states(_vehicle_local_pos, _vehicle_attitude, angular_velocity, _thrust_sp, _torque_sp)};
 
 
-		// 使用不同的方法计算
+		// use different method to calculate
 		_wrench_adjustion->adjustCalculate(states, Ts);
 
-		// 发布adjusted结果
+		// publish the result of adjuster
 		vehicle_thrust_setpoint_adjusted_s vehicle_thrust_setpoint_adjusted{};
 		vehicle_torque_setpoint_adjusted_s vehicle_torque_setpoint_adjusted{};
 
@@ -399,7 +399,7 @@ void WrenchAdjuster::Run()
 	// 	 (double)_torque_sp(1),
 	// 	 (double)_torque_sp(2));
 
-	// 如果更新了wrench or thrust or torque, then update the states
+	// if wrench or thrust or torque was updated, then update the states
 	// and calculate the outputs.
 	// if (do_update) {
 	// _last_run = now;

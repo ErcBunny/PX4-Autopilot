@@ -64,20 +64,22 @@ def get_lpf(omega, Ts):
 # A = params.A
 # lpf_omega = params.lpf_omega
 # Ts = params.l1_Ts
-a = -10
+a = -6
 A = np.diag([a, a, a, a, a, a]) # TODO: need further tunning, -10 with 1 works on real hardware
-w = 1
-lpf_omega = np.array([w, w, w, w, w, w])
-Ts = 1/250      # to use with cpp node l1 and mpc rate should be set to 1/100 == ekf_Ts
+w = 3
+lpf_omega = np.array([w, w, w, w+3, w+3, w+3])
+Ts = 1/250      # Ts is the period of the L1 Wrench adjustiion module in PX4.
+		# The value of Ts should change with the frequency of the PX4 vehicle attitude feedback
+		# and it is different between sim and real.
 G, H, C, D = get_lpf(lpf_omega, Ts)
 
 # l1 estimator matrix 6 * 6
 E = np_inv(exp_ATs(A, Ts) - np.eye(np.size(A, 0))) @ A @ exp_ATs(A, Ts)
 
-# C 就是omega向量的对角阵
+# C is a diag matrix for lpf_omega
 print("C:")
 print(C)
-# D 就是全零的
+# D is a null matrix
 print("D:")
 print(D)
 
