@@ -56,6 +56,8 @@ void matrix_block_set(const matrix::SquareMatrix3d &input, matrix::Matrix<double
 		}
 	}
 }
+// double amplitude_limit(double &input, const float lowbound, const float upperbound)
+
 void WrenchAdjustionL1::updateParameters()
 {
 	updateParams();
@@ -145,37 +147,55 @@ void WrenchAdjustionL1::adjustCalculate(const WrenchAdjustionStates &states, con
 	matrix::Dcm<double> R(states.q);
 	update_input_gain(_B, _Binv, R);
 	update_reduced_states(_z, states.v, states.w);
+
+	if (double(states.pos(2)) > -0.4) {
+		// the vehicle dos not take off and has the force of ground support
+		_z_hat = _z;
+	}
+
 	_sigma_hat = -_Binv * _E * (_z_hat - _z);
-	// PX4_INFO("L1 adjust calculated _sigma_hat: \t%f \t %f", _sigma_hat(2), _sigma_hat(5));
+	// PX4_INFO("L1 adjust z_hat vs z:\n %f\t %f\t %f\t %f\t %f\t %f\t \n %f\t %f\t %f\t %f\t %f\t %f",
+	// 	 _z_hat(0), _z_hat(1), _z_hat(2), _z_hat(3), _z_hat(4), _z_hat(5),
+	// 	 _z(0), _z(1), _z(2), _z(3), _z(4), _z(5));
+	// PX4_INFO("L1 adjust calculated _sigma_hat: \t%f \t %f", _sigma_hat(0), _sigma_hat(3));
 	update_output_lpf(_thrust_adjusted_output, _torque_adjusted_output, _sigma_hat);
 
 	update_reduced_states_estimation(_z_hat, states.thrust, states.torque, R, states.w, _B, _thrust_adjusted_output,
 					 _torque_adjusted_output, _sigma_hat, _z, Ts);
 
-	// PX4_INFO("L1 adjust calculated result: \t%f \t %f", _thrust_adjusted_output(0), _torque_adjusted_output(1));
+	// PX4_INFO("L1 adjust calculated result: \t%f \t %f", states.thrust(0), _thrust_adjusted_output(0));
+	// PX4_INFO("L1 adjust calculated result:\n %f \t %f \t %f \t %f \t %f \t %f",
+	// 	 _thrust_adjusted_output(0), _thrust_adjusted_output(1), _thrust_adjusted_output(2),
+	// 	 _torque_adjusted_output(0), _torque_adjusted_output(1), _torque_adjusted_output(2));
 
 	_thrust_adjusted = states.thrust + _thrust_adjusted_output;
 	_torque_adjusted = states.torque + _torque_adjusted_output;
 }
 
 
-void WrenchAdjustionL1::update_input_gain(matrix::SquareMatrix<double, 6> &B, matrix::SquareMatrix<double, 6> Binv,
+void WrenchAdjustionL1::update_input_gain(matrix::SquareMatrix<double, 6> &B, matrix::SquareMatrix<double, 6> &Binv,
 		const matrix::SquareMatrix3d &R)
 {
-	matrix_block_set(R / _vehicle_mass, _B, 0, 0);
-	matrix_block_set(R.transpose() * _vehicle_mass, _Binv, 0, 0);
-	matrix_block_set(_vehicle_mass * _d_hat * R.transpose(), _Binv, 3, 0);
+	matrix_block_set(R / _vehicle_mass, B, 0, 0);
+	matrix_block_set(R.transpose() * _vehicle_mass, Binv, 0, 0);
+	matrix_block_set(_vehicle_mass * _d_hat * R.transpose(), Binv, 3, 0);
 }
 
 void WrenchAdjustionL1::update_reduced_states(matrix::Vector<double, 6> &z, const matrix::Vector3d &v,
 		const matrix::Vector3d &w)
 {
-	z(0) = v(0);
-	z(1) = v(1);
-	z(2) = v(2);
-	z(3) = w(0);
-	z(4) = w(1);
-	z(5) = w(2);
+	// To prevent flight control from not being prepared, because the number is NAN.
+	if (PX4_ISFINITE(v(0)) && PX4_ISFINITE(v(1)) && PX4_ISFINITE(v(2))) {
+		z(0) = v(0);
+		z(1) = v(1);
+		z(2) = v(2);
+	}
+
+	if (PX4_ISFINITE(w(0)) && PX4_ISFINITE(w(1)) && PX4_ISFINITE(w(2))) {
+		z(3) = w(0);
+		z(4) = w(1);
+		z(5) = w(2);
+	}
 }
 
 void WrenchAdjustionL1::update_output_lpf(matrix::Vector3d &f, matrix::Vector3d &t, const matrix::Vector<double, 6> &in)
@@ -188,8 +208,15 @@ void WrenchAdjustionL1::update_output_lpf(matrix::Vector3d &f, matrix::Vector3d 
 	t(0) = -_lpf.y(3);
 	t(1) = -_lpf.y(4);
 	t(2) = -_lpf.y(5);
+	f(0) = math::constrain(f(0), -20.0, 20.0);
+	f(1) = math::constrain(f(1), -20.0, 20.0);
+	f(2) = math::constrain(f(2), -20.0, 20.0);
+	t(0) = math::constrain(t(0), -2.0, 2.0);
+	t(1) = math::constrain(t(1), -2.0, 2.0);
+	t(2) = math::constrain(t(2), -2.0, 2.0);
 }
 
+// equation 3-14 of the Undergraduate Thesis
 void WrenchAdjustionL1::update_reduced_states_estimation(matrix::Vector<double, 6> &z_hat,
 		const matrix::Vector3d &f_raw, const matrix::Vector3d &t_raw,
 		const matrix::SquareMatrix3d &R, const matrix::Vector3d &w,

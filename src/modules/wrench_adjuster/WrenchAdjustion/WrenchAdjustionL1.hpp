@@ -47,6 +47,7 @@
 #include <px4_platform_common/module_params.h>
 #include <matrix/math.hpp>
 #include <matrix/matrix/Dcm.hpp>
+#include <lib/mathlib/mathlib.h>
 
 struct LpfVariable {
 	matrix::Vector<double, 6> x, y;
@@ -59,15 +60,16 @@ public:
 	{
 		_A.setZero();
 		_B.setZero();
+		_Binv.setZero();
 		_G.setZero();
 		_H.setZero();
 		_C.setZero();
 		_D.setZero();
 		_E.setZero();
 		_vehicle_inertia.setZero();
+		_J_inv.setZero();
 		_center_of_mass.setZero();
 		_vehicle_mass = 1;
-		_center_of_mass.setZero();
 		_d_hat.setZero();
 		_lpf.x.setZero();
 		_lpf.y.setZero();
@@ -84,7 +86,7 @@ public:
 
 	void calculateOtherParams();
 
-	void update_input_gain(matrix::SquareMatrix<double, 6> &B, matrix::SquareMatrix<double, 6> Binv,
+	void update_input_gain(matrix::SquareMatrix<double, 6> &B, matrix::SquareMatrix<double, 6> &Binv,
 			       const matrix::SquareMatrix3d &R);
 
 	void update_reduced_states(matrix::Vector<double, 6> &z, const matrix::Vector3d &v, const matrix::Vector3d &w);
@@ -110,7 +112,7 @@ private:
 	// A G H C D E
 	matrix::Matrix<double, 6, 6> _A{};
 	matrix::SquareMatrix<double, 6> _B{};
-	matrix::Matrix<double, 6, 6> _Binv{};
+	matrix::SquareMatrix<double, 6> _Binv{};
 	matrix::Matrix<double, 6, 6> _C{};
 	matrix::Matrix<double, 6, 6> _D{};
 	matrix::Matrix<double, 6, 6> _E{};

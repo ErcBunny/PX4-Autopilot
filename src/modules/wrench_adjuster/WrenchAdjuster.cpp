@@ -117,6 +117,7 @@ WrenchAdjustionStates WrenchAdjuster::set_wrench_ad_states(
 		states.pos(0) = NAN;
 		states.pos(1) = NAN;
 		states.pos(2) = NAN;
+		PX4_WARN("states.pos NAN!");
 	}
 
 	if (PX4_ISFINITE(local_pos.vx) && PX4_ISFINITE(local_pos.vy) && PX4_ISFINITE(local_pos.vz)
@@ -129,6 +130,7 @@ WrenchAdjustionStates WrenchAdjuster::set_wrench_ad_states(
 		states.v(0) = NAN;
 		states.v(1) = NAN;
 		states.v(2) = NAN;
+		PX4_WARN("states.v NAN!");
 	}
 
 	if (PX4_ISFINITE(attitude.q[0]) && PX4_ISFINITE(attitude.q[1]) && PX4_ISFINITE(attitude.q[2])
@@ -143,6 +145,7 @@ WrenchAdjustionStates WrenchAdjuster::set_wrench_ad_states(
 		states.q(1) = NAN;
 		states.q(2) = NAN;
 		states.q(2) = NAN;
+		PX4_WARN("states.q NAN!");
 	}
 
 	if (PX4_ISFINITE(angular_vel.xyz[0]) && PX4_ISFINITE(angular_vel.xyz[1]) && PX4_ISFINITE(angular_vel.xyz[2])) {
@@ -154,6 +157,7 @@ WrenchAdjustionStates WrenchAdjuster::set_wrench_ad_states(
 		states.w(0) = NAN;
 		states.w(1) = NAN;
 		states.w(2) = NAN;
+		PX4_WARN("states.w NAN!");
 	}
 
 	if (PX4_ISFINITE(_thrust_sp(0)) && PX4_ISFINITE(_thrust_sp(1)) && PX4_ISFINITE(_thrust_sp(2))) {
@@ -163,6 +167,7 @@ WrenchAdjustionStates WrenchAdjuster::set_wrench_ad_states(
 		states.thrust(0) = NAN;
 		states.thrust(1) = NAN;
 		states.thrust(2) = NAN;
+		PX4_WARN("states.thrust NAN!");
 	}
 
 	if (PX4_ISFINITE(_torque_sp(0)) && PX4_ISFINITE(_torque_sp(1)) && PX4_ISFINITE(_torque_sp(2))) {
@@ -172,6 +177,7 @@ WrenchAdjustionStates WrenchAdjuster::set_wrench_ad_states(
 		states.torque(0) = NAN;
 		states.torque(1) = NAN;
 		states.torque(2) = NAN;
+		PX4_WARN("states.torque NAN!");
 	}
 
 	return states;
@@ -303,7 +309,7 @@ void WrenchAdjuster::Run()
 		// Time for L1 calculate
 		const hrt_abstime time_stamp_now = angular_velocity.timestamp;
 		const double Ts = math::constrain(((time_stamp_now - _time_stamp_last_loop) * 1e-6f), 0.002f, 0.04f);
-		// PX4_INFO("dt = %.4f", (double)dt);
+		// PX4_INFO("Ts = %.4f", (double)Ts);
 		_time_stamp_last_loop = time_stamp_now;
 
 		_timestamp_sample = angular_velocity.timestamp_sample;
@@ -314,6 +320,7 @@ void WrenchAdjuster::Run()
 		_vehicle_thrust_setpoint_sub.update(&_vehicle_thrust_setpoint);
 		_vehicle_torque_setpoint_sub.update(&_vehicle_torque_setpoint);
 
+		// from mpc
 		if (_vehicle_wrench_setpoint_sub.update(&_vehicle_wrench_setpoint)) {
 
 			_last_wrench_update = now;
@@ -345,6 +352,7 @@ void WrenchAdjuster::Run()
 			PX4_INFO("switch back to PX4 ctrl");
 		}
 
+		// from pid
 		if (!_use_wrench_sp) {
 			_thrust_sp = matrix::Vector3d(_vehicle_thrust_setpoint.xyz[0],
 						      _vehicle_thrust_setpoint.xyz[1],
@@ -361,7 +369,16 @@ void WrenchAdjuster::Run()
 
 
 		// use different method to calculate
-		_wrench_adjustion->adjustCalculate(states, Ts);
+		if (abs(Ts - 0.0040) > 0.0004) {
+			PX4_WARN("Ts != 0.0040! please check the LPF params!");
+			PX4_WARN("Ts = %.4f", (double)Ts);
+
+		} else {
+			//the params of L1 is decided by Ts and is pre-setted,
+			//if Ts is abnormal, the result of L1 can not be used,
+			//so just use the previous result.
+			_wrench_adjustion->adjustCalculate(states, Ts);
+		}
 
 		// publish the result of adjuster
 		vehicle_thrust_setpoint_adjusted_s vehicle_thrust_setpoint_adjusted{};
@@ -383,9 +400,6 @@ void WrenchAdjuster::Run()
 		_vehicle_torque_setpoint_adjusted_pub.publish(vehicle_torque_setpoint_adjusted);
 
 
-		if (abs(Ts - 0.0040) > 0.0004) {
-			PX4_WARN("Ts != 0.0040! please check the LPF params!");
-		}
 
 
 	}
