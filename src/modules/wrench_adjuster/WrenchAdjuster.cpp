@@ -257,6 +257,19 @@ void WrenchAdjuster::update_wrench_adjustion_method()
 	}
 }
 
+void WrenchAdjuster::clear_wrench_adjustion_method()
+{
+	WrenchAdjustion *tmp = nullptr;
+
+	tmp = new WrenchAdjustionNone();
+	PX4_INFO("RESET! method == NONE!");
+
+	delete _wrench_adjustion;
+	_wrench_adjustion = tmp;
+
+	_wrench_adjustion->updateParameters();
+}
+
 void WrenchAdjuster::Run()
 {
 	// PX4_INFO("debug 1");
@@ -301,6 +314,7 @@ void WrenchAdjuster::Run()
 	// const float dt = math::constrain(((now - _last_run) / 1e6f), 0.0002f, 0.02f);
 	const float dt_w = (now - _last_wrench_update) / 1e6f;
 
+	// PX4_INFO("dt_w = %.4f", (double)dt_w);
 	// bool do_update = false;
 
 	vehicle_angular_velocity_s angular_velocity;
@@ -347,9 +361,10 @@ void WrenchAdjuster::Run()
 		// if wrench_setpoint hasn't been updated for 20ms
 		// and _use_wrench_sp is true (often in the case that MPC node is shut down)
 		// switch back to PX4 MC control pipeline
-		if (dt_w > 0.02f && _use_wrench_sp) {
+		if (dt_w > 0.03f && _use_wrench_sp) {
 			_use_wrench_sp = false;
-			PX4_INFO("switch back to PX4 ctrl");
+			PX4_INFO("dt_w = %.4f, switch back to PX4 ctrl", (double)dt_w);
+			clear_wrench_adjustion_method();
 		}
 
 		// from pid

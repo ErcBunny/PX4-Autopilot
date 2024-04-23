@@ -121,6 +121,7 @@ private:
 	void parameters_updated();
 
 	void update_wrench_adjustion_method();
+	void clear_wrench_adjustion_method();
 
 	enum class WrenchAdjustionMethod {
 		NONE = -1,
