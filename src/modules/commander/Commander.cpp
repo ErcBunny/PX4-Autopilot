@@ -1503,6 +1503,17 @@ Commander::handle_command(const vehicle_command_s &cmd)
 	case vehicle_command_s::VEHICLE_CMD_REQUEST_CAMERA_INFORMATION:
 		/* ignore commands that are handled by other parts of the system */
 		break;
+	case vehicle_command_s::VEHICLE_CMD_DO_SET_PARAMETER:
+		// only for EKF2_GPS_CTRL
+		// very hacky walkaround for lack of support of
+		// changing parameter using the PX4-ROS2 bridge as of Feb 2025
+		if (((int)(cmd.param1)) == 0) {
+			int32_t val = (int32_t)(cmd.param2);
+			param_set(param_find("EKF2_GPS_CTRL"), &val);
+			PX4_INFO("set param EKF2_GPS_CTRL");
+		}
+		break;
+
 
 	default:
 		/* Warn about unsupported commands, this makes sense because only commands

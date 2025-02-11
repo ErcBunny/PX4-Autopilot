@@ -1,0 +1,77 @@
+#!/bin/sh
+#
+# @name Gazebo xlab550
+#
+# @type Quadrotor
+#
+
+. ${R}etc/init.d/rc.mc_defaults
+
+PX4_SIMULATOR=${PX4_SIMULATOR:=gz}
+PX4_GZ_WORLD=${PX4_GZ_WORLD:=default}
+PX4_SIM_MODEL=${PX4_SIM_MODEL:=xlab550}
+
+param set-default SIM_GZ_EN 1
+
+param set-default SENS_EN_GPSSIM 1
+param set-default SENS_EN_BAROSIM 0
+param set-default SENS_EN_MAGSIM 1
+
+param set-default CA_AIRFRAME 0
+param set-default CA_ROTOR_COUNT 4
+
+param set-default CA_ROTOR0_PX 0.20186889868
+param set-default CA_ROTOR0_PY 0.20186889868
+param set-default CA_ROTOR0_PZ -0.03913573795
+param set-default CA_ROTOR0_AX -0.03535533902
+param set-default CA_ROTOR0_AY -0.03535533902
+param set-default CA_ROTOR0_AZ -0.99874921777
+param set-default CA_ROTOR0_KM 0.05
+
+param set-default CA_ROTOR1_PX -0.20186889868
+param set-default CA_ROTOR1_PY -0.20186889868
+param set-default CA_ROTOR1_PZ -0.03913573795
+param set-default CA_ROTOR1_AX 0.03535533902
+param set-default CA_ROTOR1_AY 0.03535533902
+param set-default CA_ROTOR1_AZ -0.99874921777
+param set-default CA_ROTOR1_KM 0.05
+
+param set-default CA_ROTOR2_PX 0.20186889868
+param set-default CA_ROTOR2_PY -0.20186889868
+param set-default CA_ROTOR2_PZ -0.03913573795
+param set-default CA_ROTOR2_AX -0.03535533902
+param set-default CA_ROTOR2_AY 0.03535533902
+param set-default CA_ROTOR2_AZ -0.99874921777
+param set-default CA_ROTOR2_KM -0.05
+
+param set-default CA_ROTOR3_PX -0.20186889868
+param set-default CA_ROTOR3_PY 0.20186889868
+param set-default CA_ROTOR3_PZ -0.03913573795
+param set-default CA_ROTOR3_AX 0.03535533902
+param set-default CA_ROTOR3_AY -0.03535533902
+param set-default CA_ROTOR3_AZ -0.99874921777
+param set-default CA_ROTOR3_KM -0.05
+
+param set-default SIM_GZ_EC_FUNC1 101
+param set-default SIM_GZ_EC_FUNC2 102
+param set-default SIM_GZ_EC_FUNC3 103
+param set-default SIM_GZ_EC_FUNC4 104
+
+param set-default SIM_GZ_EC_MIN1 150
+param set-default SIM_GZ_EC_MIN2 150
+param set-default SIM_GZ_EC_MIN3 150
+param set-default SIM_GZ_EC_MIN4 150
+
+param set-default SIM_GZ_EC_MAX1 1000
+param set-default SIM_GZ_EC_MAX2 1000
+param set-default SIM_GZ_EC_MAX3 1000
+param set-default SIM_GZ_EC_MAX4 1000
+
+param set-default MPC_THR_HOVER 0.60
+param set-default EKF2_HGT_REF 3
+
+param set-default MC_YAW_P 5
+param set-default MPC_Z_P 1
+param set-default MPC_Z_VEL_P_ACC 4
+
+param set EKF2_GPS_CTRL 7
